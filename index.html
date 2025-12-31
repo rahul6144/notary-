@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Original Notary - Rahul & Rubi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --notary-blue: #1a237e;
+            --notary-red: #b71c1c;
+            --stamp-purple: #4a148c;
+        }
+
+        body {
+            background-color: #1a202c;
+            font-family: 'Tinos', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .outer-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        /* Fixed A4 - No Change to dimensions or layout */
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fff;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        /* Responsive Visibility Guard - Scales the whole page to fit mobile screen */
+        @media (max-width: 215mm) {
+            .outer-wrapper {
+                padding: 10px;
+                justify-content: center;
+            }
+            .page-container {
+                transform: scale(calc(100vw / 225mm));
+                transform-origin: top center;
+                margin: 0;
+            }
+        }
+
+        /* Header Style */
+        .e-stamp-header {
+            background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
+            padding: 25px;
+            border-bottom: 4px double #000;
+            text-align: center;
+            position: relative;
+        }
+
+        .stamp-circle {
+            width: 140px;
+            height: 140px;
+            border: 10px double var(--stamp-purple);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto;
+            background: white;
+            box-shadow: 0 0 0 5px white, 0 0 0 8px var(--stamp-purple);
+            color: var(--stamp-purple);
+        }
+
+        /* Original Stamps and Photos Positioning */
+        .serial-stamp-manual {
+            position: absolute;
+            top: 105mm;
+            left: 20px;
+            border: 2px solid var(--notary-blue);
+            color: var(--notary-blue);
+            padding: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            transform: rotate(-3deg);
+            z-index: 10;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .photo-area-fixed {
+            position: absolute;
+            top: 100mm;
+            right: 25mm;
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .notary-photo-frame {
+            width: 32mm;
+            height: 42mm;
+            border: 1px solid #ccc;
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .legal-body-text {
+            padding: 45mm 20mm 20mm 20mm;
+            position: relative;
+            z-index: 2;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        /* Watermark */
+        .watermark-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80px;
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1;
+            letter-spacing: 10px;
+        }
+
+        /* Seals */
+        .round-seal-ink {
+            width: 140px;
+            height: 140px;
+            border: 5px double var(--notary-blue);
+            border-radius: 50%;
+            color: var(--notary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            transform: rotate(-10deg);
+            position: absolute;
+            bottom: 230px;
+            right: 40px;
+            opacity: 0.6;
+        }
+
+        .red-ribbon-seal {
+            width: 80px;
+            height: 80px;
+            background: var(--notary-red);
+            border-radius: 50%;
+            border: 2px dashed #ffeb3b;
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .no-print { display: none !important; }
+            .outer-wrapper { padding: 0; }
+            .page-container { 
+                box-shadow: none; 
+                border: none; 
+                margin: 0; 
+                width: 210mm; 
+                transform: scale(1) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Professional Controls -->
+    <div class="no-print w-full bg-slate-900 p-4 sticky top-0 z-[100] flex justify-between items-center shadow-xl">
+        <h2 class="text-white font-bold ml-4 uppercase text-xs tracking-widest">Digital Notary Document</h2>
+        <button onclick="window.print()" class="bg-red-600 text-white font-bold px-8 py-2 rounded shadow-lg hover:bg-red-700 transition-all text-xs">
+            PRINT / SAVE AS PDF
+        </button>
+    </div>
+
+    <div class="outer-wrapper">
+        <div class="page-container">
+            <div class="watermark-overlay">SATYAMEV JAYATE</div>
+
+            <!-- E-STAMP BANNER -->
+            <header class="e-stamp-header">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/800px-Emblem_of_India.svg.png" alt="Emblem" class="w-16 mx-auto mb-2">
+                <h1 class="text-2xl font-black uppercase text-black">Government of India</h1>
+                <h2 class="text-lg font-bold border-t border-black inline-block px-8 mt-1">E-Stamp Certificate</h2>
+                
+                <div class="stamp-circle">
+                    <span class="text-xs font-bold text-purple-900 uppercase">रुपये</span>
+                    <span class="text-6xl font-black text-purple-950">500</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest mt-1">Five Hundred Only</span>
+                </div>
+
+                <div class="w-full mt-4 flex justify-between text-[11px] font-bold border-t border-black pt-2 px-8 italic">
+                    <span>Certificate No: IN-DL882299114400R</span>
+                    <span>Date: <span id="curDate"></span></span>
+                </div>
+            </header>
+
+            <!-- ORIGINAL STAMPS RESTORED -->
+            <div class="serial-stamp-manual">
+                BOOK ENTRY NO: 42/2026<br>
+                REGISTER VOL: VIII<br>
+                SERIAL NO: 1109/ND<br>
+                PAGE NO: 254<br>
+                <div class="mt-1 text-red-700 uppercase">Verified & Registered</div>
+            </div>
+
+            <!-- PHOTOS RESTORED -->
+            <div class="photo-area-fixed">
+                <div class="text-center">
+                    <img src="rahul.jpeg" alt="Rahul" class="notary-photo-frame">
+                    <p class="text-[10px] font-bold mt-1">RAHUL</p>
+                </div>
+                <div class="text-center">
+                    <img src="rubi.jpg" alt="Rubi" class="notary-photo-frame">
+                    <p class="text-[10px] font-bold mt-1">RUBI</p>
+                </div>
+            </div>
+
+            <!-- LEGAL DEED CONTENT -->
+            <main class="legal-body-text">
+                <div class="flex justify-between mb-8">
+                    <div class="border-2 border-blue-900 text-blue-900 px-3 py-1 font-bold text-[9px] transform rotate-1 uppercase">Original Document</div>
+                    <div class="border-2 border-blue-900 text-blue-900 px-3 py-1 font-bold text-[9px] transform -rotate-1 uppercase tracking-tighter">Certified Deed</div>
+                </div>
+
+                <h2 class="text-center text-2xl font-black underline mb-8 uppercase tracking-widest">Deed of Live-In Relationship Agreement</h2>
+
+                <p class="mb-6 font-bold leading-relaxed">THIS INDENTURE OF AGREEMENT is executed at New Delhi on this <strong><span id="dayNum"></span></strong> day of <strong><span id="monthText"></span>, <span id="yearNum"></span></strong>, by and between:</p>
+
+ <div class="space-y-10 text-[15px] font-medium">
+                    <p><strong>Mr. RAHUL</strong>, Son of Vinod Yadav, Aged 19 years, Resident of Village - Jori, Post - Mokatma police station - Rajpur District - Chatra, jharkhand, holding Aadhaar Identification Number 396728229312, hereinafter referred to as the <strong>"FIRST PARTY"</strong> (which expression shall mean and include his legal heirs, executors, and administrators).</p>
+                    
+                    <p class="text-center font-black text-gray-300 text-2xl tracking-[0.5em]">--- AND ---</p>
+                    
+                    <p><strong>Ms. RUBI</strong>, Daughter of Jodhan Yadav, Aged 18 years, Resident of Village - Harhad, Post - Peltol police station - Rajpur District - Chatra, jharkhand, holding Aadhaar Identification Number [Rubi's ID], hereinafter referred to as the <strong>"SECOND PARTY"</strong> (which expression shall mean and include her legal heirs, executors, and administrators).</p>
+                </div>
+
+
+                <div class="mt-14 space-y-5 text-[14px] font-bold leading-relaxed border-l-8 border-gray-200 pl-6 italic">
+                    <p>1. WHEREAS both parties are majors by age and are sui juris, possessing the legal capacity to enter into this bona-fide arrangement of their own free will and volition.</p>
+                    <p>2. WHEREAS the parties have mutually covenanted to reside together in a common household, maintaining a domestic relationship in the nature of marriage, subject to the terms herein.</p>
+                    <p>3. WHEREAS this deed shall serve as a solemn declaration of their status and mutual responsibilities towards each other during the period of cohabitation.</p>
+                </div>
+
+
+                <!-- SIGNATURES RESTORED -->
+                <div class="mt-14 grid grid-cols-2 gap-8">
+                    <div class="text-center">
+                        <img src="signra.png" alt="S1" class="h-10 mx-auto filter brightness-50">
+                        <div class="border-t border-black pt-1 font-bold uppercase text-[10px]">Signature (First Party)</div>
+                        <img src="rleft.png" alt="T1" class="w-10 h-14 mx-auto mt-2 opacity-60">
+                        <p class="text-[7px] font-bold">L.T.I.</p>
+                    </div>
+                    <div class="text-center">
+                        <img src="signru.png" alt="S2" class="h-10 mx-auto filter brightness-50">
+                        <div class="border-t border-black pt-1 font-bold uppercase text-[10px]">Signature (Second Party)</div>
+                        <img src="thumbr.png" alt="T2" class="w-10 h-14 mx-auto mt-2 opacity-60">
+                        <p class="text-[7px] font-bold">L.T.I.</p>
+                    </div>
+                </div>
+
+                <!-- SEALS RESTORED -->
+                <div class="round-seal-ink">
+                    NOTARY PUBLIC<br>
+                    GOVERNMENT OF INDIA<br>
+                    REG. NO: 8877 / 2026<br>
+                    CHATRA DISTRICT
+                </div>
+
+                <div class="red-ribbon-seal">
+                    <div class="text-yellow-300 text-[10px] text-center font-black">OFFICIAL<br>NOTARY<br>SEAL</div>
+                </div>
+
+                <!-- FOOTER RESTORED -->
+                <div class="mt-32 pt-4 border-t-2 border-black flex justify-between items-end">
+                    <div>
+                        <p class="font-bold text-xs">ATTESTED BEFORE ME:</p>
+                        <p class="font-bold mt-10 uppercase text-lg">Notary Public / Advocate</p>
+                        <p class="text-[9px] italic">Date: <span id="vDate"></span></p>
+                    </div>
+                    <div class="border-2 border-red-700 text-red-700 p-2 font-black text-[10px] transform -rotate-2">SEALED & SIGNED</div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const d = new Date();
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        document.getElementById('curDate').innerText = d.toLocaleDateString('en-IN');
+        document.getElementById('vDate').innerText = d.toLocaleDateString('en-IN');
+        document.getElementById('dayNum').innerText = d.getDate();
+        document.getElementById('monthText').innerText = months[d.getMonth()];
+        document.getElementById('yearNum').innerText = d.getFullYear();
+    </script>
+</body>
+</html>
